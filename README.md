@@ -23,3 +23,15 @@ az deployment group what-if --resource-group urlshortener-dev --template-file in
 az deployment group what-if --resource-group urlshortener-dev --template-file infrastructure/main.bicep
 ```
 
+### Create User for GitHub Actions
+```bash
+az ad sp create-for-rbac --name "GitHub-Actions-SP" \
+                         --role contributor \
+                         --scopes subscriptions/subscriptionId/ \
+                         --sdk-auth
+```
+
+### Configure a federated identity credential on an app
+
+
+
