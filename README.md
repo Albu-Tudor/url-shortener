@@ -18,3 +18,8 @@ az group create --name urlshortener-dev --location westeurope
 az deployment group what-if --resource-group urlshortener-dev --template-file infrastructure/main.bicep
 ```
 
+### deploy command
+```bash
+az deployment group what-if --resource-group urlshortener-dev --template-file infrastructure/main.bicep
+```
+
