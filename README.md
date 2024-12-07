@@ -35,3 +35,7 @@ az ad sp create-for-rbac --name "GitHub-Actions-SP" \
 
 https://learn.microsoft.com/en-gb/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#configure-a-federated-identity-credential-on-an-app
 
+### Get the AZURE_API_PUBLISH_PROFILE variable
+```baash
+az webapp deployment list-publishing-profiles --name {WEBAPP_NAME} --resource-group {RESOURCE_GROUP_NAME} --xml
+```
