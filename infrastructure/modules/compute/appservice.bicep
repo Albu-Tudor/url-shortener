@@ -19,9 +19,9 @@ resource webApp 'Microsoft.Web/sites@2022-09-01' = {
   location: location
   properties: {
       serverFarmId: appServicePlan.id
-      httpsOnly:true
+      httpsOnly: true
       siteConfig: {
-        linuxFxVersion: 'DOTNETCORE|8'
+        linuxFxVersion: 'DOTNETCORE|8.0'
       }
   }
 }
