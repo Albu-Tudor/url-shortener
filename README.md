@@ -20,7 +20,7 @@ az deployment group what-if --resource-group urlshortener-dev --template-file in
 
 ### deploy command
 ```bash
-az deployment group what-if --resource-group urlshortener-dev --template-file infrastructure/main.bicep
+az deployment group create --resource-group urlshortener-dev --template-file infrastructure/main.bicep
 ```
 
 ### Create User for GitHub Actions
@@ -36,6 +36,6 @@ az ad sp create-for-rbac --name "GitHub-Actions-SP" \
 https://learn.microsoft.com/en-gb/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#configure-a-federated-identity-credential-on-an-app
 
 ### Get the AZURE_API_PUBLISH_PROFILE variable
-```baash
+```bash
 az webapp deployment list-publishing-profiles --name {WEBAPP_NAME} --resource-group {RESOURCE_GROUP_NAME} --xml
 ```
