@@ -29,3 +29,9 @@ az ad sp create-for-rbac --name "GitHub-Actions-SP" --role contributor --scopes 
 ```
 
 #### Configure a federal identity credential on an app
+
+
+### Get publish profile for App Service
+```bash
+az webapp deployment list-publishing-profiles --name <APP_NAME> --resource-group <RESOURCE_GROUP_NAME> --xml
+```
