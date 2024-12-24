@@ -28,7 +28,15 @@ az deployment group create --resource-group urlshortener-dev --template-file .\i
 az ad sp create-for-rbac --name "GitHub-Actions-SP" --role contributor --scopes /subscriptions/<subscription-id> --sdk-auth
 ```
 
+### Apply to Custom Contributor Role
+
+```bash
+az ad sp create-for-rbac --name "GitHub-Actions-SP" --role 'infra_deploy' --scopes /subscriptions/<subscription-id> --sdk-auth
+```
+
 #### Configure a federal identity credential on an app
+
+https://learn.microsoft.com/en-gb/entra/workload-id/workload-identity-federation-create-trust?pivots=identity-wif-apps-methods-azp#configure-a-federated-identity-credential-on-an-app
 
 
 ### Get publish profile for App Service
