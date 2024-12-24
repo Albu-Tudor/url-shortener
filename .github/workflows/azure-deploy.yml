@@ -31,7 +31,7 @@ jobs:
 
       - uses: Azure/CLI@v2
         with:
-          inlineScipt: |
+          inlineScript: |
             #!/bin/bash
             az group create --name ${{ vars.RESOURCE_GROUP_NAME }} --location ${{ vars.RESOURCE_GROUP_LOCATION }}
             echo "Azure resource group created"
