@@ -15,13 +15,13 @@ az group create --name urlshortener-dev --location westeurope
 
 ### What if
 ```bash 
- az deployment group what-if --resource-group urlshortener-dev --template-file .\infrastructure\main.bicep
+az deployment group what-if --resource-group urlshortener-dev --template-file .\infrastructure\main.bicep
  ```
 
 ### Deploy
- ```bash
- az deployment group create --resource-group urlshortener-dev --template-file .\infrastructure\main.bicep
- ```
+```bash
+az deployment group create --resource-group urlshortener-dev --template-file .\infrastructure\main.bicep
+```
 
 ### Create User for GitHub Actions
 ```bash
