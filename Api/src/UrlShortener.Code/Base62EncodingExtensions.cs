@@ -1,21 +1,24 @@
-﻿public static class Base62EncodingExtensions
+﻿namespace UrlShortener.Core
 {
-    private const string Alphanumeric =
-        "0123456789" +
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-        "abcdefghijklmnopqrstuvwxyz";
-
-    public static string EncodeToBase62(this int number)
+    public static class Base62EncodingExtensions
     {
-        if (number == 0) return Alphanumeric[0].ToString();
+        private const string Alphanumeric =
+            "0123456789" +
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+            "abcdefghijklmnopqrstuvwxyz";
 
-        var result = new Stack<char>();
-        while (number > 0)
+        public static string EncodeToBase62(this long number)
         {
-            result.Push(Alphanumeric[number%62]);
-            number /= 62;
-        }
+            if (number == 0) return Alphanumeric[0].ToString();
 
-        return new string(result.ToArray());
+            var result = new Stack<char>();
+            while (number > 0)
+            {
+                result.Push(Alphanumeric[(int)number % 62]);
+                number /= 62;
+            }
+
+            return new string(result.ToArray());
+        }
     }
 }

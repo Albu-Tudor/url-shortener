@@ -1,0 +1,6 @@
+TEST LIST
+
+Unique tokens
+Accept multiple Ranges
+Move Tests solution in the test folder
+_tokenRange on TokenProvider can be null when getting the Token
