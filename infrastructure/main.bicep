@@ -23,12 +23,13 @@ module apiService 'modules/compute/appservice.bicep' = {
   ]
 }
 
-module keyVaultRoleAssigment 'modules/secrets/key-vault-role-assignment.bicep' = {
+module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' = {
   name: 'keyVaultRoleAssignmentDeployment'
   params: {
     keyVaultName: keyVault.outputs.name
     principalIds: [
       apiService.outputs.principalId
+      // Add more principal IDs as needed
     ]
   }
   dependsOn: [

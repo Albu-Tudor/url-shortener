@@ -1,6 +1,5 @@
-param vaultName string
 param location string = resourceGroup().location
-
+param vaultName string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   name: vaultName

@@ -7,12 +7,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyVaultName
 }
 
-resource keyVaultRoleAssigment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(keyVault.id, principalId, roleDefinitionId)
-  scope: keyVault
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
-    principalId: principalId
-    principalType: principalType
+resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
+  for principalId in principalIds: {
+    name: guid(keyVault.id, principalId, roleDefinitionId)
+    scope: keyVault
+    properties: {
+      roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionId)
+      principalId: principalId
+      principalType: principalType
+    }
   }
-}]
+]
