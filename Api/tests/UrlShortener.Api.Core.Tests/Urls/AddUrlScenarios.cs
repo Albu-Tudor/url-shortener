@@ -27,8 +27,9 @@ namespace UrlShortener.Api.Core.Tests.Urls
 
             var response = await _handler.HandleAsync(request, default);
 
-            response.ShortUrl.Should().NotBeEmpty();
-            response.ShortUrl.Should().Be("1");
+            response.Succeded.Should().BeTrue();
+            response.Value!.ShortUrl.Should().NotBeEmpty();
+            response.Value!.ShortUrl.Should().Be("1");
         }
 
         [Fact]
@@ -38,7 +39,8 @@ namespace UrlShortener.Api.Core.Tests.Urls
 
             var response = await _handler.HandleAsync(request, default);
 
-            _urlDataStore.Should().ContainKey(response.ShortUrl);
+            response.Succeded.Should().BeTrue();
+            _urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
         }
 
         [Fact]
@@ -48,17 +50,29 @@ namespace UrlShortener.Api.Core.Tests.Urls
 
             var response = await _handler.HandleAsync(request, default);
 
-            _urlDataStore.Should().ContainKey(response.ShortUrl);
-            _urlDataStore[response.ShortUrl].CreatedBy.Should().Be(request.CreatedBy);
-            _urlDataStore[response.ShortUrl].CreatedOn.Should()
+            response.Succeded.Should().BeTrue();
+            _urlDataStore.Should().ContainKey(response.Value!.ShortUrl);
+            _urlDataStore[response.Value!.ShortUrl].CreatedBy.Should().Be(request.CreatedBy);
+            _urlDataStore[response.Value!.ShortUrl].CreatedOn.Should()
                 .Be(_timeProvider.GetLocalNow());
         }
 
-        private static AddUrlRequest CreateUrlRequest()
+        [Fact]
+        public async Task Should_return_error_if_created_by_us_empty()
+        {;
+            var request = CreateUrlRequest(createdBy: string.Empty);
+
+            var response = await _handler.HandleAsync(request, default);
+
+            response.Succeded.Should().BeFalse();
+            response.Error.Code.Should().Be("missing_value");
+        }
+
+        private static AddUrlRequest CreateUrlRequest(string createdBy = "tudor@gmail.com")
         {
             return new AddUrlRequest(
                 new Uri("https://dometrain.com/"),
-                "tudor@gmail.com");
+                createdBy);
         }
     }
 }
