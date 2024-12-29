@@ -28,7 +28,7 @@ module cosmosDb 'modules/storage/cosmos-db.bicep' = {
     kind: 'GlobalDocumentDB'
     databaseName: 'urls'
     locationName: 'Spain Central'
-    keyVaultName: keyVault.name
+    keyVaultName: keyVault.outputs.name
   }
 }
 
