@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Api.Core.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Core", "Api\src\UrlShortener.Code\UrlShortener.Core.csproj", "{6B3E8C56-C92D-456B-8FB6-E4FA539C6208}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.Tests", "Api\tests\UrlShortener.Tests\UrlShortener.Tests.csproj", "{1EB04480-F8C1-41DF-BCB2-0131233BAA82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Tests", "Api\tests\UrlShortener.Tests\UrlShortener.Tests.csproj", "{1EB04480-F8C1-41DF-BCB2-0131233BAA82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.Infrastructure", "UrlShortener.Infrastructure\UrlShortener.Infrastructure.csproj", "{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{1EB04480-F8C1-41DF-BCB2-0131233BAA82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EB04480-F8C1-41DF-BCB2-0131233BAA82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EB04480-F8C1-41DF-BCB2-0131233BAA82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{845581E6-8C8E-4586-BFEE-010CCE3038A4} = {FDFB71DE-5095-431C-BB1E-79BBC42ED36D}
 		{6B3E8C56-C92D-456B-8FB6-E4FA539C6208} = {F9E866AE-15D5-4864-955E-D8FE466F13E1}
 		{1EB04480-F8C1-41DF-BCB2-0131233BAA82} = {FDFB71DE-5095-431C-BB1E-79BBC42ED36D}
+		{D06FA8E9-0E46-45B7-B38C-E030480B2FDE} = {F9E866AE-15D5-4864-955E-D8FE466F13E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {414E130C-7804-4D94-BFB5-C498E6DE5AD2}
