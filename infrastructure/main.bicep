@@ -1,4 +1,6 @@
 param location string = resourceGroup().location
+@secure()
+param pgSqlPassword string
 
 var uniqueId = uniqueString(resourceGroup().id)
 
@@ -40,6 +42,17 @@ module tokenRangeService 'modules/compute/appservice.bicep' = {
   }
 }
 
+module postres 'modules/storage/postgres.bicep' = {
+  name: 'postgresDeployment'
+  params: {
+    name: 'postres-${uniqueId}' 
+    location: location
+    administratorLogin: 'adminuser'
+    administratorLoginPassword: pgSqlPassword
+    keyVaultName: keyVault.outputs.name
+  }
+}
+
 module cosmosDb 'modules/storage/cosmos-db.bicep' = {
   name: 'cosmosDbDeployment'
   params: {
@@ -58,7 +71,7 @@ module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' 
     keyVaultName: keyVault.outputs.name
     principalIds: [
       apiService.outputs.principalId
-      // Add more principal IDs as needed
+      tokenRangeService.outputs.principalId
     ]
   }
 }
