@@ -23,6 +23,15 @@ builder.Services
     .AddUrlFeature()
     .AddCosmosUrlDataStore(builder.Configuration);
 
+builder.Services.AddHttpClient("TokenRangeService",
+    client => 
+    {
+        client.BaseAddress = new Uri(builder.Configuration["TokenRangeService:Endpoint"]!); // TODO: Add to bicep
+    });
+
+builder.Services.AddSingleton<TokenRangeApiClient>();
+builder.Services.AddHostedService<TokenManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
