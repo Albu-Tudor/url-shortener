@@ -33,11 +33,16 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: dotnet publish
       run: dotnet publish TokenRanges/src/UrlShortener.TokenRangeService -c Release -o ${{env.DOTNET_ROOT}}/myapp
-    - name: Upload artifacts for deploymnet job
+    - name: Upload artifacts for deployment job
       uses: actions/upload-artifact@v4
       with:
         name: .net-app
         path: ${{env.DOTNET_ROOT}}/myapp
+    - name: Upload sql artifact for db deployment
+      uses: actions/upload-artifact@v4
+      with:
+        name: pg-script
+        path: TokenRanges/tests/UrlShortener.TokenRangeService.Tests/Table.sql
 
   deploy-dev:
     runs-on: ubuntu-latest
@@ -45,10 +50,16 @@ jobs:
     environment: Development
 
     steps:
-      - name: Download artifacts from build job
+
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
+
+      - name: Download db artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: pg-script
 
       - name: Install PostgresSQL Client
         run: |
@@ -66,7 +77,7 @@ jobs:
           PGDATABASE: ranges
           PGUSER: ${{ secrets.POSTGRES_USER }}
           PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        run: psql -f TokenRanges/tests/UrlShortener.TokenRangeService.Tests/Table.sql
+        run: psql -f Table.sql
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
