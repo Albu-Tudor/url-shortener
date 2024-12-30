@@ -28,10 +28,10 @@ builder.Services
 builder.Services.AddHttpClient("TokenRangeService",
     client => 
     {
-        client.BaseAddress = new Uri(builder.Configuration["TokenRangeService:Endpoint"]!); // TODO: Add to bicep
+        client.BaseAddress = new Uri(builder.Configuration["TokenRangeService:Endpoint"]!);
     });
 
-builder.Services.AddSingleton<TokenRangeApiClient>();
+builder.Services.AddSingleton<ITokenRangeApiClient, TokenRangeApiClient>();
 builder.Services.AddHostedService<TokenManager>();
 
 var app = builder.Build();
