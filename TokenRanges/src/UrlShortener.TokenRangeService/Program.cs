@@ -8,8 +8,8 @@ var keyVaultName = builder.Configuration["KeyVaultName"];
 if (!string.IsNullOrEmpty(keyVaultName))
 {
     builder.Configuration.AddAzureKeyVault(
-        new Uri($"https://{keyVaultName}.vault.azure.net/"),
-        new DefaultAzureCredential());
+    new Uri($"https://{keyVaultName}.vault.azure.net/"),
+    new DefaultAzureCredential());
 }
 
 builder.Services.AddSingleton(
