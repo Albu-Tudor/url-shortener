@@ -50,6 +50,24 @@ jobs:
         with:
           name: .net-app
 
+      - name: Install PostgresSQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+              
+      - name: Deploy Database Schema
+        env:
+          PGHOST: ${{ secrets.POSTGRES_HOST }}
+          PGDATABASE: ranges
+          PGUSER: ${{ secrets.POSTGRES_USER }}
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        run: psql -f TokenRanges/tests/UrlShortener.TokenRangeService.Tests/Table.sql
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
