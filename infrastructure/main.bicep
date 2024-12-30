@@ -35,7 +35,7 @@ module apiService 'modules/compute/appservice.bicep' = {
 module tokenRangeService 'modules/compute/appservice.bicep' = {
   name: 'tokenRangeSeviceDeployment'
   params: {
-    appName: 'token-range-serivce-${uniqueId}' 
+    appName: 'token-range-service-${uniqueId}' 
     appServicePlanName: 'plan-token-range-${uniqueId}'
     location: location
     keyVaultName: keyVault.outputs.name
