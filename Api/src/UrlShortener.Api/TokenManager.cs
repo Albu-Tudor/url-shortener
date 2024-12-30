@@ -1,4 +1,9 @@
-﻿using UrlShortener.Core;
+﻿using Polly;
+using Polly.Extensions.Http;
+using Polly.Retry;
+
+using UrlShortener.Api;
+using UrlShortener.Core;
 
 public class TokenManager : IHostedService
 {
@@ -6,26 +11,35 @@ public class TokenManager : IHostedService
     private readonly ILogger<TokenManager> _logger;
     private readonly string _machineIdentifier;
     private readonly TokenProvider _tokenProvider;
+    private readonly IEnvironmentManager _environmentManager;
 
-    public TokenManager(ITokenRangeApiClient client, TokenProvider tokenProvider, ILogger<TokenManager> logger)
+    public TokenManager(ITokenRangeApiClient client, TokenProvider tokenProvider, ILogger<TokenManager> logger, IEnvironmentManager environmentManager)
     {
         _client = client;
         _tokenProvider = tokenProvider;
         _logger = logger;
         _machineIdentifier = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID") ?? "unknown";
+        _environmentManager = environmentManager;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        // Get a new range
-        _logger.LogInformation("Starting token manager");
-
-        _tokenProvider.ReachingRangeLimit += async (sender, args) =>
+        try
         {
-            await AssignNewRangeAsync(cancellationToken);
-        };
+            _logger.LogInformation("Starting token manager");
 
-        await AssignNewRangeAsync(cancellationToken);
+            _tokenProvider.ReachingRangeLimit += async (sender, args) =>
+            {
+                await AssignNewRangeAsync(cancellationToken);
+            };
+
+            await AssignNewRangeAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex, "Token Manager failed to start due to an error.");
+            _environmentManager.FatalError(); // Stop the application with a fatal error
+        }
     }
 
     private async Task AssignNewRangeAsync(CancellationToken cancellationToken)
@@ -57,6 +71,12 @@ public class TokenRangeApiClient : ITokenRangeApiClient
 {
     private readonly HttpClient _httpClient;
 
+    private static readonly AsyncRetryPolicy<HttpResponseMessage> RetryPolicy =
+        HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .WaitAndRetryAsync(3, retryAttempt =>
+            TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
     public TokenRangeApiClient(IHttpClientFactory httpClientFactory)
     {
         _httpClient = httpClientFactory.CreateClient("TokenRangeService");
@@ -64,8 +84,10 @@ public class TokenRangeApiClient : ITokenRangeApiClient
 
     public async Task<TokenRange?> AssignRangeAsync(string machineKey, CancellationToken cancellationToken)
     {
-        var response = await _httpClient.PostAsJsonAsync("assign",
-            new { Key = machineKey }, cancellationToken);
+
+        var response = await RetryPolicy.ExecuteAsync(() => 
+            _httpClient.PostAsJsonAsync("assign",
+                new { Key = machineKey }, cancellationToken));
 
         if (!response.IsSuccessStatusCode)
         {

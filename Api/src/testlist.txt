@@ -1,11 +1,3 @@
 TEST LIST
 
-Getting to the end of the range
-- Controlling the size of the range
 
-STARTS
--> POST /assign
-	-> [1..3]
-		-> 1
-		-> 2
-		-> 3

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 using NSubstitute;
 
+using UrlShortener.Api;
 using UrlShortener.Core;
 
 namespace UrlShortener.Tests
@@ -19,7 +20,8 @@ namespace UrlShortener.Tests
             
             var tokenManager = new TokenManager(tokenRangeApiClient,
                 Substitute.For<TokenProvider>(),
-                Substitute.For<ILogger<TokenManager>>());
+                Substitute.For<ILogger<TokenManager>>(),
+                Substitute.For<IEnvironmentManager>());
 
             await tokenManager.StartAsync(default);
 
@@ -30,14 +32,15 @@ namespace UrlShortener.Tests
         public async Task Should_throw_exception_when_no_tokens_assigned()
         {
             var tokenRangeApiClient = Substitute.For<ITokenRangeApiClient>();
+            var environmentManager = Substitute.For<IEnvironmentManager>();
             var tokenManager = new TokenManager(tokenRangeApiClient,
                 Substitute.For<TokenProvider>(),
-                Substitute.For<ILogger<TokenManager>>());
+                Substitute.For<ILogger<TokenManager>>(),
+                environmentManager);
 
-            var action = async () => await tokenManager.StartAsync(default);
+            await tokenManager.StartAsync(default);
 
-            await action.Should().ThrowAsync<Exception>()
-                .WithMessage("No tokens assigned");
+            environmentManager.Received().FatalError();
         }
     }
 }
