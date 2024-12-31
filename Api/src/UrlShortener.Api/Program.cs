@@ -1,5 +1,6 @@
 using Azure.Identity;
 
+using UrlShortener.Api;
 using UrlShortener.Api.Extensions;
 using UrlShortener.Core.Urls.Add;
 using UrlShortener.Infrastructure.Extensions;
@@ -18,10 +19,20 @@ if (!string.IsNullOrEmpty(keyVaultName))
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton(TimeProvider.System)
+    .AddSingleton<IEnvironmentManager, EnvironmentManager>();
 builder.Services
     .AddUrlFeature()
     .AddCosmosUrlDataStore(builder.Configuration);
+
+builder.Services.AddHttpClient("TokenRangeService",
+    client => 
+    {
+        client.BaseAddress = new Uri(builder.Configuration["TokenRangeService:Endpoint"]!);
+    });
+
+builder.Services.AddSingleton<ITokenRangeApiClient, TokenRangeApiClient>();
+builder.Services.AddHostedService<TokenManager>();
 
 var app = builder.Build();
 

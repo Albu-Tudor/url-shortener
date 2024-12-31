@@ -2,11 +2,11 @@
 
 using UrlShortener.Api;
 using UrlShortener.Core.Urls.Add;
-using UrlShortener.Core.Urls;
 using Microsoft.AspNetCore.Hosting;
 using UrlShortener.Tests.Extentions;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using UrlShortener.Tests.TestDoubles;
 
 namespace UrlShortener.Tests
 {
@@ -21,18 +21,12 @@ namespace UrlShortener.Tests
                     services
                         .AddSingleton<IUrlDataStore>(
                         new InMemoryUrlDataStore());
+
+                    services.Remove<ITokenRangeApiClient>();
+                    services.AddSingleton<ITokenRangeApiClient, FakeTokenRangeApiClient>();
                 });
 
             base.ConfigureWebHost(builder);
-        }
-    }
-    public class InMemoryUrlDataStore : Dictionary<string, ShortenedUrl>, IUrlDataStore
-    {
-        public Task AddAsync(ShortenedUrl shortened, CancellationToken cancellationToken)
-        {
-            Add(shortened.ShortUrl, shortened);
-
-            return Task.CompletedTask;
         }
     }
 }
