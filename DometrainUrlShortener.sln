@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Core", "Api\sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Tests", "Api\tests\UrlShortener.Tests\UrlShortener.Tests.csproj", "{1EB04480-F8C1-41DF-BCB2-0131233BAA82}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Infrastructure", "UrlShortener.Infrastructure\UrlShortener.Infrastructure.csproj", "{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Infrastructure", "Api\src\UrlShortener.Infrastructure\UrlShortener.Infrastructure.csproj", "{D06FA8E9-0E46-45B7-B38C-E030480B2FDE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TokenRanges", "TokenRanges", "{CC7FFF02-6CE4-4EB3-AA4F-BA3557FDDEE9}"
 EndProject
