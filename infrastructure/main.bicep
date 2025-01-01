@@ -118,6 +118,15 @@ module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' 
   }
 }
 
+module redisCache 'modules/storage/redis-cache.bicep' = {
+  name: 'redisCacheDeployment'
+  params: {
+    name: 'redis-catch-${uniqueId}'
+    location: location
+    keyVaultName: keyVaultName
+  }
+}
+
 module entraApp 'modules/identity/entra-app.bicep' = {
   name: 'entraAppWeb'
   params: {
