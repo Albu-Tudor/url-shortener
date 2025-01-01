@@ -3,7 +3,6 @@
 using UrlShortener.Api;
 using UrlShortener.Core.Urls.Add;
 using Microsoft.AspNetCore.Hosting;
-using UrlShortener.Tests.Extentions;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using UrlShortener.Tests.TestDoubles;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.Extensions.Logging;
+using UrlShortener.Libraries.Testing;
 
 namespace UrlShortener.Tests
 {
