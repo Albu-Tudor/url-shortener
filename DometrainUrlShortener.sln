@@ -27,7 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.TokenRangeServ
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5840BF1A-AC12-4CB3-8C30-9C9844975B89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.TokenRangeService.Tests", "TokenRanges\tests\UrlShortener.TokenRangeService.Tests\UrlShortener.TokenRangeService.Tests.csproj", "{41937DC6-2D3F-4C20-A6C4-A79C4DF276F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.TokenRangeService.Tests", "TokenRanges\tests\UrlShortener.TokenRangeService.Tests\UrlShortener.TokenRangeService.Tests.csproj", "{41937DC6-2D3F-4C20-A6C4-A79C4DF276F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RedirectApi", "RedirectApi", "{E7F223F7-6D62-472F-8BC0-C5518E58B0C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C372E31D-C747-46D9-8601-92D56DC44969}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1C94CA46-503E-44C6-912D-58AE6C3716FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.RedirectApi", "RedirectApi\src\UrlShortener.RedirectApi\UrlShortener.RedirectApi.csproj", "{5D4D77A4-A704-479E-AEAD-36C88412693A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +71,10 @@ Global
 		{41937DC6-2D3F-4C20-A6C4-A79C4DF276F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41937DC6-2D3F-4C20-A6C4-A79C4DF276F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41937DC6-2D3F-4C20-A6C4-A79C4DF276F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D4D77A4-A704-479E-AEAD-36C88412693A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D4D77A4-A704-479E-AEAD-36C88412693A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D4D77A4-A704-479E-AEAD-36C88412693A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D4D77A4-A704-479E-AEAD-36C88412693A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +91,9 @@ Global
 		{53EAD796-27D0-47FC-B61F-18C6DDA57FF1} = {020CEB54-7AA1-4FAC-BECC-7918A0D93FA4}
 		{5840BF1A-AC12-4CB3-8C30-9C9844975B89} = {CC7FFF02-6CE4-4EB3-AA4F-BA3557FDDEE9}
 		{41937DC6-2D3F-4C20-A6C4-A79C4DF276F7} = {5840BF1A-AC12-4CB3-8C30-9C9844975B89}
+		{C372E31D-C747-46D9-8601-92D56DC44969} = {E7F223F7-6D62-472F-8BC0-C5518E58B0C6}
+		{1C94CA46-503E-44C6-912D-58AE6C3716FB} = {E7F223F7-6D62-472F-8BC0-C5518E58B0C6}
+		{5D4D77A4-A704-479E-AEAD-36C88412693A} = {C372E31D-C747-46D9-8601-92D56DC44969}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {414E130C-7804-4D94-BFB5-C498E6DE5AD2}
