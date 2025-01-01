@@ -14,7 +14,7 @@ resource redis 'Microsoft.Cache/redis@2023-08-01' = {
     redisVersion: '6.0'
     publicNetworkAccess: 'Enabled'
     redisConfiguration:{
-      'aad-enable': 'True'
+      'aad-enabled': 'True'
     }
   }
 }
