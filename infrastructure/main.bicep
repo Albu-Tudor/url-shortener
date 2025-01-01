@@ -83,6 +83,25 @@ module redirectApiService 'modules/compute/appservice.bicep' = {
   }
 }
 
+module storageAccount 'modules/storage/storage-account.bicep' = {
+  name: 'storageAccountDeployment'
+  params: {
+    name: 'storage${uniqueId}'
+    location: location
+  }
+}
+
+module cosmosTriggerFunction 'modules/compute/function.bicep' = {
+  name: 'cosmosTriggerFunctionDeployment'
+  params: {
+    appServicePlanName: 'plan-cosmos-trigger-${uniqueId}'
+    name: 'cosmos-trigger-function-${uniqueId}' 
+    location: location
+    keyVaultName: keyVaultName
+    storageAccountConnectionString: storageAccount.outputs.storageAccountConnectionString
+  }
+}
+
 module postres 'modules/storage/postgres.bicep' = {
   name: 'postgresDeployment'
   params: {
@@ -114,6 +133,7 @@ module keyVaultRoleAssignment 'modules/secrets/key-vault-role-assignment.bicep' 
       apiService.outputs.principalId
       tokenRangeService.outputs.principalId
       redirectApiService.outputs.principalId
+      cosmosTriggerFunction.outputs.principalId
     ]
   }
 }
