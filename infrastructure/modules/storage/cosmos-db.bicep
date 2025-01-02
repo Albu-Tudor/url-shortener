@@ -10,6 +10,10 @@ param containers array = [
     name: 'items'
     partitionKey: '/PartitionKey'
   }
+  {
+    name: 'byUser'
+    partitionKey: '/PartitionKey'
+  }
 ]
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {

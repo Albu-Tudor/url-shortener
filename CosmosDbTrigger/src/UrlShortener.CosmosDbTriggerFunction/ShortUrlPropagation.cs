@@ -1,43 +1,82 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 namespace UrlShortener.CosmosDbTriggerFunction
 {
     public class ShortUrlPropagation
     {
         private readonly ILogger _logger;
+        private readonly Container _container;
 
-        public ShortUrlPropagation(ILoggerFactory loggerFactory)
+        public ShortUrlPropagation(ILoggerFactory loggerFactory, Container container)
         {
             _logger = loggerFactory.CreateLogger<ShortUrlPropagation>();
+            _container = container;
         }
 
         [Function("ShortUrlPropagation")]
-        public void Run([CosmosDBTrigger(
+        public async Task Run([CosmosDBTrigger(
             databaseName: "urls",
             containerName: "items",
             Connection = "CosmosDbConnection",
             LeaseContainerName = "leases",
-            CreateLeaseContainerIfNotExists = true)] IReadOnlyList<MyDocument> input)
+            CreateLeaseContainerIfNotExists = true)] IReadOnlyList<UrlDocument> input)
         {
-            if (input != null && input.Count > 0)
+            if (input == null && input.Count <= 0) return;
+
+            foreach (var document in input)
             {
-                _logger.LogInformation("Documents modified: " + input.Count);
-                _logger.LogInformation("First document Id: " + input[0].id);
+                _logger.LogInformation("Short Url: {ShortUrl}", document.Id);
+
+                try
+                {
+                    var cosmosDbDocument = new ShortenedUrlEntity(
+                        document.LongUrl,
+                        document.Id,
+                        document.CreatedOn,
+                        document.CreatedBy);
+                    await _container.UpsertItemAsync(cosmosDbDocument, new PartitionKey(document.CreatedBy));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error writing to Cosmos DB");
+                    throw;
+                }
             }
         }
     }
 
-    public class MyDocument
+    public class UrlDocument
     {
-        public string id { get; set; }
+        public string Id { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public string LongUrl { get; set; }
 
-        public string Text { get; set; }
+    }
 
-        public int Number { get; set; }
+    public class ShortenedUrlEntity
+    {
+        public string LongUrl { get; }
 
-        public bool Boolean { get; set; }
+        [JsonProperty(PropertyName = "id")]
+        public string ShortUrl { get; }
+        
+        public DateTimeOffset CreatedOn { get; }
+
+        [JsonProperty(PropertyName = "PartitionKey")]
+        public string CreatedBy { get; }
+
+        public ShortenedUrlEntity(string longUrl, string shortUrl,
+            DateTimeOffset createdOn, string createdBy)
+        {
+            LongUrl = longUrl;
+            ShortUrl = shortUrl;
+            CreatedOn = createdOn;
+            CreatedBy = createdBy;
+        }
     }
 }
