@@ -37,11 +37,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1C94CA46
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.RedirectApi", "RedirectApi\src\UrlShortener.RedirectApi\UrlShortener.RedirectApi.csproj", "{5D4D77A4-A704-479E-AEAD-36C88412693A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.RedirectApi.Tests", "RedirectApi\tests\UrlShortener.RedirectApi.Tests\UrlShortener.RedirectApi.Tests.csproj", "{7F30C56A-1127-42D4-9A39-A3F1F45DBE9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.RedirectApi.Tests", "RedirectApi\tests\UrlShortener.RedirectApi.Tests\UrlShortener.RedirectApi.Tests.csproj", "{7F30C56A-1127-42D4-9A39-A3F1F45DBE9D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{54549294-6AE2-43E7-AE66-797987F733CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.Libraries.Testing", "Libraries\UrlShortener.Libraries.Testing\UrlShortener.Libraries.Testing.csproj", "{0CE50E53-C0B1-4B01-A3FB-0015FBE92B8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Libraries.Testing", "Libraries\UrlShortener.Libraries.Testing\UrlShortener.Libraries.Testing.csproj", "{0CE50E53-C0B1-4B01-A3FB-0015FBE92B8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CosmosDbTrigger", "CosmosDbTrigger", "{61FFC6A7-7822-4B71-9DBE-8E1FB9FBCB1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F14C08C4-3B96-4BC6-B399-12E41E51FD41}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.CosmosDbTriggerFunction", "CosmosDbTrigger\src\UrlShortener.CosmosDbTriggerFunction\UrlShortener.CosmosDbTriggerFunction.csproj", "{D7374DB9-7060-44F5-BC0F-AE639DD7D4DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +95,10 @@ Global
 		{0CE50E53-C0B1-4B01-A3FB-0015FBE92B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CE50E53-C0B1-4B01-A3FB-0015FBE92B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CE50E53-C0B1-4B01-A3FB-0015FBE92B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7374DB9-7060-44F5-BC0F-AE639DD7D4DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7374DB9-7060-44F5-BC0F-AE639DD7D4DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7374DB9-7060-44F5-BC0F-AE639DD7D4DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7374DB9-7060-44F5-BC0F-AE639DD7D4DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +120,8 @@ Global
 		{5D4D77A4-A704-479E-AEAD-36C88412693A} = {C372E31D-C747-46D9-8601-92D56DC44969}
 		{7F30C56A-1127-42D4-9A39-A3F1F45DBE9D} = {1C94CA46-503E-44C6-912D-58AE6C3716FB}
 		{0CE50E53-C0B1-4B01-A3FB-0015FBE92B8E} = {54549294-6AE2-43E7-AE66-797987F733CD}
+		{F14C08C4-3B96-4BC6-B399-12E41E51FD41} = {61FFC6A7-7822-4B71-9DBE-8E1FB9FBCB1A}
+		{D7374DB9-7060-44F5-BC0F-AE639DD7D4DB} = {F14C08C4-3B96-4BC6-B399-12E41E51FD41}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {414E130C-7804-4D94-BFB5-C498E6DE5AD2}

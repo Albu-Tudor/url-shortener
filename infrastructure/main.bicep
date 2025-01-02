@@ -99,6 +99,12 @@ module cosmosTriggerFunction 'modules/compute/function.bicep' = {
     location: location
     keyVaultName: keyVaultName
     storageAccountConnectionString: storageAccount.outputs.storageAccountConnectionString
+    appSettings: [
+      {
+        name: 'CosmosDbConnection'
+        value: '@Microsoft.KeyVault(SecretUri=https://${keyVaultName}.vault.azure.net/secrets/CosmosDb--ConnectionString/)'
+      }
+    ]
   }
 }
 
