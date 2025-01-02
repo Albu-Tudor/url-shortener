@@ -2,6 +2,8 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
+using Newtonsoft.Json;
+
 namespace UrlShortener.CosmosDbTriggerFunction
 {
     public class ShortUrlPropagation
@@ -31,7 +33,12 @@ namespace UrlShortener.CosmosDbTriggerFunction
 
                 try
                 {
-                    await _container.UpsertItemAsync(document, new PartitionKey(document.CreatedBy));
+                    var cosmosDbDocument = new ShortenedUrlEntity(
+                        document.LongUrl,
+                        document.Id,
+                        document.CreatedOn,
+                        document.CreatedBy);
+                    await _container.UpsertItemAsync(cosmosDbDocument, new PartitionKey(document.CreatedBy));
                 }
                 catch (Exception ex)
                 {
@@ -49,5 +56,27 @@ namespace UrlShortener.CosmosDbTriggerFunction
         public string CreatedBy { get; set; }
         public string LongUrl { get; set; }
 
+    }
+
+    public class ShortenedUrlEntity
+    {
+        public string LongUrl { get; }
+
+        [JsonProperty(PropertyName = "id")]
+        public string ShortUrl { get; }
+        
+        public DateTimeOffset CreatedOn { get; }
+
+        [JsonProperty(PropertyName = "PartitionKey")]
+        public string CreatedBy { get; }
+
+        public ShortenedUrlEntity(string longUrl, string shortUrl,
+            DateTimeOffset createdOn, string createdBy)
+        {
+            LongUrl = longUrl;
+            ShortUrl = shortUrl;
+            CreatedOn = createdOn;
+            CreatedBy = createdBy;
+        }
     }
 }
