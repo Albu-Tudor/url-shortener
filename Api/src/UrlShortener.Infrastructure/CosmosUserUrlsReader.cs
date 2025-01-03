@@ -2,6 +2,8 @@
 
 using Newtonsoft.Json;
 
+using System.Text;
+
 using UrlShortener.Core.Urls.Add;
 using UrlShortener.Core.Urls.List;
 
@@ -10,38 +12,55 @@ namespace UrlShortener.Infrastructure
     public class CosmosUserUrlsReader : IUserUrlsReader
     {
         private readonly Container _container;
-        private const int PageSize = 20;
 
         public CosmosUserUrlsReader(Container container)
         {
             _container = container;
         }
 
-        public async Task<ListUrlsResponse> GetAsync(string createdBy, CancellationToken cancellationToken)
+        public async Task<ListUrlsResponse> GetAsync(string createdBy, 
+            int pageSize,
+            string? continuationToken,
+            CancellationToken cancellationToken)
         {
             var query =
                 new QueryDefinition("SELECT * FROM c  WHERE c.PartitionKey = @partitionKey")
                 .WithParameter("@partitionKey", createdBy);
 
+            var queryContinuationToken = continuationToken is null
+                ? null
+                : Encoding.UTF8.GetString(Convert.FromBase64String(continuationToken));
+
             var iterator = _container.GetItemQueryIterator<ShortenedUrlEntity>(query,
+                continuationToken: queryContinuationToken,
                 requestOptions: new QueryRequestOptions
                 {
                     PartitionKey = new PartitionKey(createdBy),
-                    MaxItemCount = PageSize
+                    MaxItemCount = pageSize
                 });
 
             var results = new List<ShortenedUrlEntity>();
+            string? resultContinuationToken = null;
+            int readItemsCount = 0;
 
-            while(iterator.HasMoreResults)
+            while(readItemsCount < pageSize && iterator.HasMoreResults)
             {
                 var response = await iterator.ReadNextAsync(cancellationToken);
                 results.AddRange(response);
+                readItemsCount += response.Count();
+                resultContinuationToken = response.ContinuationToken;
             }
+
+            var responseContinuationToken = resultContinuationToken is null
+                ? null
+                : Convert.ToBase64String(Encoding.UTF8.GetBytes(resultContinuationToken));
 
             return new ListUrlsResponse(
                 results.Select(e =>
                     new UrlItem(e.ShortUrl, e.LongUrl, e.CreatedOn))
-                    .ToList());
+                    .ToList(),
+                responseContinuationToken!
+                );
         }
     }
 

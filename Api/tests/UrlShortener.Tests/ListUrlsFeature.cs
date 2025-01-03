@@ -54,5 +54,38 @@ namespace UrlShortener.Tests
             urls.Urls.Should()
                 .Contain(url => url.ShortUrl == urlCreated.ShortUrl);
         }
+
+        [Fact]
+        public async Task Should_return_only_the_number_of_urls_requested()
+        {
+            await AddUrl();
+            await AddUrl();
+            await AddUrl();
+
+            var getResponse = await _client.GetAsync("api/urls?pageSize=2");
+            var urls = await getResponse.Content
+                .ReadFromJsonAsync<ListUrlsResponse>();
+
+            urls.Urls.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public async Task Should_be_able_to_continue_to_next_page()
+        {
+            await AddUrl();
+            await AddUrl();
+            await AddUrl();
+
+            var getFirstResponse = await _client.GetAsync("api/urls?pageSize=2");
+            var firstPageUrls = await getFirstResponse.Content
+                .ReadFromJsonAsync<ListUrlsResponse>();
+
+            var getNewPage = await _client.GetAsync($"api/urls?pageSize=2&continuation={firstPageUrls.ContinuationToken}");
+            var newPageUrls = await getNewPage.Content 
+                .ReadFromJsonAsync<ListUrlsResponse>();
+
+            newPageUrls.Urls.Should()
+                .NotIntersectWith(firstPageUrls.Urls);
+        }
     }
 }
