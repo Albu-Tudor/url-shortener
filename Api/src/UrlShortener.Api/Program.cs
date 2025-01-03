@@ -2,14 +2,17 @@ using Azure.Identity;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 
+using System.ClientModel;
 using System.Security.Authentication;
 using System.Security.Claims;
 
 using UrlShortener.Api;
 using UrlShortener.Api.Extensions;
 using UrlShortener.Core.Urls.Add;
+using UrlShortener.Core.Urls.List;
 using UrlShortener.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -114,11 +117,14 @@ app.MapPost("/api/urls",
         result.Value);
 });
 
-app.MapGet("/api/urls", async (HttpContext context, IUserUrlsReader reader, CancellationToken cancellationToken) =>
+app.MapGet("/api/urls", async(HttpContext context,
+    ListUrlHandler haedler,
+    int ? pageSize,
+    [FromQuery(Name = "continuation")] string ? continuationToken,
+    CancellationToken cancellationToken) =>
     {
-        var email = context.User.GetUserEmail();
-
-        var urls = await reader.GetAsync(email, cancellationToken);
+        var request = new ListUrlsRequest(context.User.GetUserEmail(), pageSize, continuationToken);
+        var urls = await haedler.HandleAsync(request, cancellationToken);
 
         return urls;
     }
