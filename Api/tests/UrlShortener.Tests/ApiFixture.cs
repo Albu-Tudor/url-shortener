@@ -23,10 +23,16 @@ namespace UrlShortener.Tests
             builder.ConfigureTestServices(
                 services =>
                 {
+                    var inMemoryUrlStore = new InMemoryUrlDataStore();
                     services.Remove<IUrlDataStore>();
                     services
                         .AddSingleton<IUrlDataStore>(
-                        new InMemoryUrlDataStore());
+                            inMemoryUrlStore);
+
+                    services.Remove<IUserUrlsReader>();
+                    services
+                        .AddSingleton<IUserUrlsReader>(
+                            inMemoryUrlStore);
 
                     services.Remove<ITokenRangeApiClient>();
                     services.AddSingleton<ITokenRangeApiClient, FakeTokenRangeApiClient>();
