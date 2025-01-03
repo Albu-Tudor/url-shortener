@@ -30,11 +30,11 @@ module apiService 'modules/compute/appservice.bicep' = {
         value: 'items'
       }
       {
-        name: 'TargetDatabaseName'
+        name: 'ByUserDatabaseName'
         value: 'urls'
       }
       {
-        name: 'TargetContainerName'
+        name: 'ByUserContainerName'
         value: 'byUser'
       }
       {
