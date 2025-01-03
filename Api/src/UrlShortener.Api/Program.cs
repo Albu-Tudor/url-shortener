@@ -30,6 +30,7 @@ builder.Services.AddSingleton(TimeProvider.System)
     .AddSingleton<IEnvironmentManager, EnvironmentManager>();
 builder.Services
     .AddUrlFeature()
+    .AddListUrlFeature()
     .AddCosmosUrlDataStore(builder.Configuration);
 
 builder.Services.AddHttpClient("TokenRangeService",
@@ -87,15 +88,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => "API")
-    .AllowAnonymous(); ;
+    .AllowAnonymous();
+
 app.MapPost("/api/urls", 
     async (AddUrlHandler handler,
     AddUrlRequest request,
     HttpContext context,
     CancellationToken cancellationToken) =>
 {
-    var email = context.User.FindFirstValue("preferred_username")
-        ?? throw new AuthenticationException("Missing preferred_username claim");
+    var email = context.User.GetUserEmail();
 
     var requestWithUser = request with
     {
@@ -112,5 +113,15 @@ app.MapPost("/api/urls",
     return Results.Created($"api/urls/{result.Value!.ShortUrl}",
         result.Value);
 });
+
+app.MapGet("/api/urls", async (HttpContext context, IUserUrlsReader reader, CancellationToken cancellationToken) =>
+    {
+        var email = context.User.GetUserEmail();
+
+        var urls = await reader.GetAsync(email, cancellationToken);
+
+        return urls;
+    }
+);
 
 app.Run();

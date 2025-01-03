@@ -1,5 +1,6 @@
 ﻿using UrlShortener.Core;
 using UrlShortener.Core.Urls.Add;
+using UrlShortener.Core.Urls.List;
 
 namespace UrlShortener.Api.Extensions
 {
@@ -10,6 +11,13 @@ namespace UrlShortener.Api.Extensions
             services.AddScoped<AddUrlHandler>();
             services.AddSingleton<TokenProvider>();
             services.AddScoped<ShortUrlGenerator>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddListUrlFeature(this IServiceCollection services)
+        {
+            services.AddScoped<ListUrlHandler>();
 
             return services;
         }
