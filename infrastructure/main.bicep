@@ -175,3 +175,11 @@ module entraApp 'modules/identity/entra-app.bicep' = {
     applicationName: 'web-${uniqueId}'
   }
 }
+
+module staticWebApp 'modules/web/static-web-app.bicep' = {
+  name: 'staticWebAppDeployment'
+  params: {
+    name: 'web-app-${uniqueId}'
+    location: location
+  }
+}
