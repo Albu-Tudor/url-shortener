@@ -1,6 +1,7 @@
 ﻿using UrlShortener.Core.Urls.Add;
 using UrlShortener.Core.Urls;
 using UrlShortener.Core.Urls.List;
+using System.ClientModel;
 
 namespace UrlShortener.Tests.TestDoubles
 {
@@ -14,15 +15,23 @@ namespace UrlShortener.Tests.TestDoubles
             return Task.CompletedTask;
         }
 
-        public Task<Core.Urls.List.ListUrlsResponse> GetAsync(string createdBy, 
+        public Task<Core.Urls.List.ListUrlsResponse> GetAsync(string createdBy,
+            int pageSize,
+            string? continuationToken,
             CancellationToken cancellationToken)
         {
-            var urls = Values
+            var data = Values
                 .Where(u => u.CreatedBy == createdBy)
-                .Select(u => new UrlItem(u.ShortUrl, u.LongUrl.ToString(), u.CreatedOn))
+                .Select((u, index) => (index, new UrlItem(u.ShortUrl, u.LongUrl.ToString(), u.CreatedOn)))
+                .Where(entry => continuationToken == null || entry.index > int.Parse(continuationToken))
+                .Take(pageSize)
                 .ToList();
 
-            return Task.FromResult(new Core.Urls.List.ListUrlsResponse(urls));
+            var urls = data.Select(entry => entry.Item2);
+            var lastItemIndex = data.Last().index;
+
+            return Task.FromResult(new Core.Urls.List.ListUrlsResponse(urls,
+                lastItemIndex.ToString()));
         }
     }
 }
