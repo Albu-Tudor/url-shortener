@@ -169,17 +169,21 @@ module redisCache 'modules/storage/redis-cache.bicep' = {
   }
 }
 
-module entraApp 'modules/identity/entra-app.bicep' = {
-  name: 'entraAppWeb'
-  params: {
-    applicationName: 'web-${uniqueId}'
-  }
-}
-
 module staticWebApp 'modules/web/static-web-app.bicep' = {
   name: 'staticWebAppDeployment'
   params: {
     name: 'web-app-${uniqueId}'
     location: location
+  }
+}
+
+module entraApp 'modules/identity/entra-app.bicep' = {
+  name: 'entraAppWeb'
+  params: {
+    applicationName: 'web-${uniqueId}'
+    spaRedirectUrls: [
+      'http://localhost:3000/'
+      staticWebApp.outputs.url
+    ]
   }
 }
