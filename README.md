@@ -43,3 +43,8 @@ https://learn.microsoft.com/en-gb/entra/workload-id/workload-identity-federation
 ```bash
 az webapp deployment list-publishing-profiles --name <APP_NAME> --resource-group <RESOURCE_GROUP_NAME> --xml
 ```
+
+### Get Static Web Apps Deployment Token
+```bash
+az staticwebapp secrets list --name <WEB_APP_NAME> --query "properties.apiKey"
+```
