@@ -1,26 +1,25 @@
-name: Web App
+name: Web APP
 
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - WebApp/**
-  pull_request:
-    branches: [ "main" ]
-    paths:
-      - WebApp/**
-  workflow_dispatch: # manual trigger
+    push:
+      branches: [ "main" ]
+      paths:
+        - WebApp/**
+    pull_request:
+      branches: [ "main" ]
+      paths:
+        - WebApp/**
+    workflow_dispatch: # manual trigger
 
 env:
   APP_LOCATION: "./WebApp/urlshortener-web-app/"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: 'Build and Deploy to Development'
-    environment: Development
-
-    steps:
+ build_and_deploy_dev:
+  runs-on: ubuntu-latest
+  name: 'Build and Deploy to Development'
+  environment: Development
+  steps:
     - uses: actions/checkout@v3
       with:
         submodules: true

@@ -182,7 +182,7 @@ module entraApp 'modules/identity/entra-app.bicep' = {
   params: {
     applicationName: 'web-${uniqueId}'
     spaRedirectUrls: [
-      'http://localhost:3000/'
+      'http://localhost:5173/'
       staticWebApp.outputs.url
     ]
   }
