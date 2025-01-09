@@ -5,7 +5,7 @@ function ListUrls({urls}) {
         <div>
             {urls && urls.map((url) => (
                 <li key={url.shortUrl}>
-                    <a href={url.shortUrl} target="_blank" rel="noopener noreferrer">{url.shortUrl}</a>
+                    <a href={url.shortUrl} target="_blank" rel="noopener noreferrer">{url.longUrl}</a>
                     {' → '}
                     <a href={url.longUrl} target="_blank" rel="noopener noreferrer">{url.shortUrl}</a>
                 </li>
