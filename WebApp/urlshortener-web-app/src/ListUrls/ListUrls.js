@@ -1,15 +1,17 @@
+import "./ListUrls.css";
 import React from "react";
 
-function ListUrls({urls}) {
+function ListUrls({ urls, continuationToken, onLoadMore }) {
     return (
-        <div>
+        <div className="url-list">
             {urls && urls.map((url) => (
-                <li key={url.shortUrl}>
-                    <a href={url.shortUrl} target="_blank" rel="noopener noreferrer">{url.longUrl}</a>
-                    {' → '}
-                    <a href={url.longUrl} target="_blank" rel="noopener noreferrer">{url.shortUrl}</a>
-                </li>
+                <div key={url.shortUrl} className="url-item">
+                    {url.shortUrl} → {url.longUrl}
+                </div>
             ))}
+            {continuationToken && (
+                <button onClick={onLoadMore}>Load more</button>
+            )}
         </div>
     );
 }

@@ -1,8 +1,10 @@
-import React, {act, useState, useEffect} from "react";
+import "./Home.css"
+import React, { useState, useEffect} from "react";
 import LogoutButton from "../LogoutButton/LogoutButton";
 import { useMsal } from "@azure/msal-react";
 import ListUrls from "../ListUrls/ListUrls";
 import axios from "axios";
+import UrlForm from "../UrlForm/UrlForm";
 
 function Home() {
 
@@ -12,7 +14,8 @@ function Home() {
     const { instance, accounts } = useMsal();
     const [data, setData] = useState({
         initialized: false,
-        urls: []  
+        urls: [],
+        continuationToken: null
     });
 
     const handleLogout = () => {
@@ -30,15 +33,33 @@ function Home() {
     };
 
     const fetchUrls = async() => {
-        var token = await getToken();
+        const token = await getToken();
         const response = await axios.get(`${apiEndpoint}/api/urls`, {
-            headers: { Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` },
+            params: {
+                continuation: data.continuationToken,
+                pageSize: 2
+            }
         });
 
-        setData({
-            initialized: true,
-            urls: response.data.urls
-        });
+        setData(
+            prev => ({
+                initialized: true,
+                urls: [...prev.urls, ...response.data.urls] ,
+                continuationToken: response.data.continuationToken
+            }));
+    };
+
+    const handleLoadMore = () => {
+        fetchUrls();
+    };
+
+    const handleSubmit = async (longUrl) => {
+        const token = await getToken();
+        await axios.post(`${apiEndpoint}/api/urls`,
+            { LongUrl: longUrl },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
     };
 
     useEffect(() => {
@@ -47,10 +68,16 @@ function Home() {
     });
 
     return (
-        <div>
-            Welcome!
-            <LogoutButton onLogout={handleLogout}></LogoutButton>
-            <ListUrls urls={data.urls}/>
+        <div className="container">
+            <h1>URL Shortener!</h1>
+            <div className="header">
+                <LogoutButton onLogout={handleLogout}></LogoutButton>
+            </div>
+            <UrlForm onSubmit={handleSubmit} />
+            <ListUrls 
+                urls={data.urls} 
+                continuationToken={data.continuationToken} 
+                onLoadMore={handleLoadMore}/>
         </div>
     );
 }
